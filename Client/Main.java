@@ -1,9 +1,42 @@
 package Client;
 
-import javafx.*;
+import javafx.application.Application;
+import javafx.stage.Stage;
 
+/*
+
+ */
 public class Main {
+    private Stage stage;
+
+
+    /**
+     *
+     */
+    public void init(){
+
+    }
+
+    /**
+     *
+     */
+    public void start(Stage stage){
+        this.stage = stage;
+
+    }
+
+    /**
+     *
+     */
+    public void update(){
+
+    }
+
+    /**
+     *
+     * @param args
+     */
     public static void main(String[] args){
-		System.out.println("Hi Connor and Jack");
+        Application.launch(); //Starts GUI
     }
 }

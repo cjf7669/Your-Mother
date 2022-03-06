@@ -11,7 +11,7 @@ public class Model {
     public Model(){
         this.observers= new LinkedList<>();
 		betAmount = 50;
-		accoundBal = 3000;
+		accountBal = 3000;
     }
 	
     //TODO EVERYTHINGGGGGG
@@ -26,9 +26,19 @@ public class Model {
     }
 	
 	public void lossBet() {
-		//if bet is lost 
-		
-		
+		//if bet is lost, bet is subtracted from bal
+		accountBal = accountBal - betAmount;
+		if(accountBal < 0) {
+			accountBal = 0;
+		}		
+	}
+	
+	public void gainBet() {
+		//if bet is won, bet is added to bal
+		accountBal = accountBal + betAmount;
+		if(accountBal < 0) {
+			accountBal = 0;
+		}		
 	}
 	
 	public void incrementBet(boolean Direct) {
@@ -37,6 +47,15 @@ public class Model {
 			betAmount += 50;
 		} else {
 			betAmount -= 50;
+		}		
+		checkBetvBal();
+	}
+	
+	public void checkBetvBal() {
+		if(betAmount > accountBal) {
+			betAmount -= 50;
+		} else if(betAmount == 0) {
+			betAmount += 50;
 		}		
 	}
 	

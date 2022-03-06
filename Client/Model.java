@@ -30,7 +30,7 @@ public class Model {
 		accountBal = accountBal - betAmount;
 		if(accountBal < 0) {
 			accountBal = 0;
-		}		
+		}
 	}
 	
 	public void gainBet() {
@@ -38,7 +38,7 @@ public class Model {
 		accountBal = accountBal + betAmount;
 		if(accountBal < 0) {
 			accountBal = 0;
-		}		
+		}
 	}
 	
 	public void incrementBet(boolean Direct) {
@@ -49,6 +49,7 @@ public class Model {
 			betAmount -= 50;
 		}		
 		checkBetvBal();
+		announce("bet");
 	}
 	
 	public void checkBetvBal() {
@@ -56,12 +57,12 @@ public class Model {
 			betAmount -= 50;
 		} else if(betAmount == 0) {
 			betAmount += 50;
-		}		
+		}
 	}
 	
 	///---Setters&Getters---///
 	public int getBallance() {
-		return accountBal;		
+		return accountBal;
 	}
 	
 	public void setBallance(int temp) {

@@ -10,6 +10,8 @@ public class Model {
 
     public Model(){
         this.observers= new LinkedList<>();
+		betAmount = 50;
+		accoundBal = 3000;
     }
 	
     //TODO EVERYTHINGGGGGG
@@ -27,6 +29,15 @@ public class Model {
 		//if bet is lost 
 		
 		
+	}
+	
+	public void incrementBet(boolean Direct) {
+		//to increment bet, false decrements by 50, true does oposite
+		if(Direct == true) {
+			betAmount += 50;
+		} else {
+			betAmount -= 50;
+		}		
 	}
 	
 	///---Setters&Getters---///

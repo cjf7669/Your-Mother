@@ -35,6 +35,10 @@ public class Main extends Application
     private Button bet;
     private Label betAmount;
     private Label accountAmount;
+    private BorderPane topBorder;
+    private FlowPane topLeftButtons;
+    private BorderPane bottomBorder;
+
 
     /**
      *
@@ -67,14 +71,16 @@ public class Main extends Application
         beforeDealStage.setScene(sceneCreatorBeforeDeal());
         beforeDealStage.show();
 
-        update(cardModel, null);
+        //update(cardModel, null);
     }
 
 ////////////////////////////////////////////////////////////////////
     public Scene sceneCreatorAfterDeal(){
-        Label moneyLabel = playerBalanceLabel();
-        window.setTop(moneyLabel);
-        BorderPane.setAlignment(moneyLabel,Pos.TOP_RIGHT);
+        window = new BorderPane();
+        BorderPane top = topBorder();
+        window.setTop(top);
+        BorderPane bottom = bottomBorder();
+        window.setBottom(bottom);
 
         window.setBackground(background);
         afterDeal = new Scene(window);
@@ -82,9 +88,66 @@ public class Main extends Application
     }
 
     public Label playerBalanceLabel(){
-        diningDollars = new Label("$3000"); //TODO Change to reflect accurate player balance amount
+        diningDollars = new Label("Account Balance: $" + cardModel.getBallance());
         diningDollars.setAlignment(Pos.TOP_RIGHT);
         return diningDollars;
+    }
+
+    public BorderPane topBorder(){
+        topBorder = new BorderPane();
+
+        Label moneyLabel = playerBalanceLabel();
+        moneyLabel.setAlignment(Pos.TOP_RIGHT);
+        topBorder.setRight(moneyLabel);
+
+        Button quit = new Button("Quit");
+        quit.setOnAction(actionEvent -> {
+            stage.close();
+            beforeDealStage.close();
+        });//TODO ADD SO THAT WHEN CLICKED SENDS QUIT TO SERVER
+        Button surrender = new Button("Surrender");
+        topLeftButtons = new FlowPane();
+        topLeftButtons.getChildren().addAll(quit, surrender);
+        topLeftButtons.setAlignment(Pos.TOP_LEFT);
+        topBorder.setLeft(topLeftButtons);
+
+        Label currentBet = new Label("Current Bet: $" + cardModel.getBet());
+        currentBet.setAlignment(Pos.TOP_LEFT);
+        topBorder.setCenter(currentBet);
+
+        return topBorder;
+    }
+
+    public BorderPane bottomBorder(){
+        bottomBorder = new BorderPane();
+
+        BorderPane leftStuff = new BorderPane();
+        Label handValue = new Label("Current Hand Value: "); //TODO ADD FUNCTION IN MODEL
+        Label tillTO = new Label("Number till 21: "); //TODO ADD FUNCTION IN MODEL
+        handValue.setAlignment(Pos.CENTER);
+        tillTO.setAlignment(Pos.CENTER);
+        leftStuff.setBottom(tillTO);
+        leftStuff.setTop(handValue);
+        bottomBorder.setLeft(leftStuff);
+
+        BorderPane rightStuff = new BorderPane();
+        FlowPane buttonLayer1 = new FlowPane();
+        FlowPane buttonLayer2 = new FlowPane();
+        Button hit = new Button("Hit");
+        Button stand = new Button("Stand");
+        Button dd = new Button("Double Down");
+        Button split = new Button("Split");
+        buttonLayer1.getChildren().addAll(hit, stand);
+        buttonLayer1.setAlignment(Pos.CENTER);
+        buttonLayer2.getChildren().addAll(dd, split);
+        buttonLayer2.setAlignment(Pos.CENTER);
+        rightStuff.setTop(buttonLayer1);
+        rightStuff.setBottom(buttonLayer2);
+        bottomBorder.setRight(rightStuff);
+
+        //TODO CENTER CARDS
+
+        return bottomBorder;
     }
 
     public Scene sceneCreatorBeforeDeal(){
@@ -92,9 +155,9 @@ public class Main extends Application
         beforeDealWindow.setBottom(createButtonPanel());
         BorderPane.setAlignment(beforeDealButtonPanel, Pos.BOTTOM_CENTER);
 
-        betAmount = new Label("Bet amount: $" + cardModel.getBet()); //TODO ADD BET AMOUNT INCREMENTATION
+        betAmount = new Label("Bet amount: $" + cardModel.getBet());
         betAmount.setAlignment(Pos.CENTER_LEFT);
-        accountAmount = new Label("Account Balance: $" + cardModel.getBallance()); //TODO ADD ACCOUNT BALANCE
+        accountAmount = new Label("Account Balance: $" + cardModel.getBallance());
         accountAmount.setAlignment(Pos.CENTER_RIGHT);
         beforeDealWindow.setLeft(betAmount);
         beforeDealWindow.setRight(accountAmount);
@@ -113,7 +176,10 @@ public class Main extends Application
         minus.setOnAction(actionEvent -> cardModel.incrementBet(false));
         bet = new Button("Bet");
         bet.setMinSize(25,25);
-        bet.setOnAction(actionEvent -> beforeDealStage.close());
+        bet.setOnAction(actionEvent -> {
+            beforeDealStage.close();
+            update(cardModel, null);
+        });
         beforeDealButtonPanel.getChildren().addAll(minus, plus, bet);
         beforeDealButtonPanel.setAlignment(Pos.CENTER);
         return beforeDealButtonPanel;
@@ -131,7 +197,11 @@ public class Main extends Application
             beforeDealStage.setScene(sceneCreatorBeforeDeal());
             beforeDealStage.show();
         }
-        stage.show();
+        else {
+            System.out.println("Main Stage Updated");
+            stage.setScene(sceneCreatorAfterDeal());
+            stage.show();
+        }
     }
 
     /**

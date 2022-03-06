@@ -1,3 +1,4 @@
+package Server;
 
 public class CardsConfig {
 	
@@ -18,19 +19,19 @@ public class CardsConfig {
 	
 	public String currentCard(int row, int col) {
 		switch (cards[row][col]) {
-			case 0: return "Ace"; break;
-			case 1: return "Two"; break;
-			case 2: return "Three"; break;
-			case 3: return "Four"; break;
-			case 4: return "Five"; break;
-			case 5: return "Six"; break;
-			case 6: return "Seven"; break;
-			case 7: return "Eight"; break;
-			case 8: return "Nine"; break;
-			case 9: return "Ten"; break;
-			case 10: return "Jack"; break;
-			case 11: return "Queen"; break;
-			case 12: return "King"; break;
+			case 0: return "Ace";
+			case 1: return "Two";
+			case 2: return "Three";
+			case 3: return "Four";
+			case 4: return "Five";
+			case 5: return "Six";
+			case 6: return "Seven";
+			case 7: return "Eight";
+			case 8: return "Nine";
+			case 9: return "Ten";
+			case 10: return "Jack";
+			case 11: return "Queen";
+			case 12: return "King";
 			default: return "Default"; 
 		}
 	}
@@ -42,13 +43,13 @@ public class CardsConfig {
 	
 	
 	public void gameRun() {
-		row1 = randomFrom(0,3);
-		col1 = randomFrom(0,12);
+		int row1 = randomFrom(0,3);
+		int col1 = randomFrom(0,12);
 		
-		if(inCards[row][col] doesntequal 1 && row2col2 same) {
+		if (inCards[row1][col1] != 1 && inCards[row2][col2] != 1) {
 			//get values of each card picked or use valcheck prob because why get string when get value numbnuts
-			value1 = currentCard(row1, col1)
-			value2 = currentCard(row2, col2)
+			String value1 = currentCard(row1, col1);
+			String value2 = currentCard(row2, col2);
 			
 			//add values
 			value = value1 + value2;

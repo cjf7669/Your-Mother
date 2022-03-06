@@ -13,8 +13,7 @@ public class Model {
 		betAmount = 50;
 		accountBal = 3000;
     }
-	
-    //TODO EVERYTHINGGGGGG
+
     public void addObserver( Observer< Model, Object > obs ) {
         this.observers.add( obs );
     }

@@ -20,9 +20,9 @@ public class Main extends Application
      */
     @Override
     public void init(){
-        //Model.addObserver(this);
         window = new BorderPane();
-        update(cardModel, null);
+        //update(cardModel, null);
+        cardModel.addObserver(this);
     }
 
     /**

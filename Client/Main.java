@@ -9,7 +9,11 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.stage.WindowEvent;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 
 /*
 Main class that runs for the client devices to connect to the server
@@ -17,6 +21,9 @@ Main class that runs for the client devices to connect to the server
 public class Main extends Application
         implements Observer<Model, Object> {
 
+    static Socket clientSocket;
+    static PrintWriter out;
+    static BufferedReader in;
     private static final Model cardModel = new Model();
     private final int HEIGHT = 600;
     private final int WIDTH = 1000;
@@ -102,6 +109,8 @@ public class Main extends Application
 
         Button quit = new Button("Quit");
         quit.setOnAction(actionEvent -> {
+            out.println("QUIT");
+            out.flush();
             stage.close();
             beforeDealStage.close();
         });//TODO ADD SO THAT WHEN CLICKED SENDS QUIT TO SERVER
@@ -208,8 +217,12 @@ public class Main extends Application
      * Main class that starts everything
      * @param args command line arguments
      */
-    public static void main(String[] args){
+    public static void main(String[] args) throws IOException {
         //TODO create connection to server here
+        clientSocket = new Socket("192.168.2.178",6666);
+        out = new PrintWriter(clientSocket.getOutputStream(), true);
+        in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
+
         Application.launch(args); //Starts GUI
     }
 }

@@ -57,6 +57,7 @@ public class Main {
                 while ((inputLine = in.readLine()) != null){
                     //TODO sends information to handling code
                     if("QUIT".equals(inputLine)){
+                        System.out.println("END GAME");
                         out.println("END GAME");
                         break;
                     }//if client sends message "QUIT" server ends communication and tells the client to end the game

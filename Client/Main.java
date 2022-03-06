@@ -27,8 +27,14 @@ public class Main extends Application
     private Scene afterDeal;
     private FlowPane beforeDealButtonPanel;
     private BorderPane beforeDealWindow;
+    private Stage beforeDealStage;
     private Background background;
     private Color green;
+    private Button plus;
+    private Button minus;
+    private Button bet;
+    private Label betAmount;
+    private Label accountAmount;
 
     /**
      *
@@ -49,12 +55,18 @@ public class Main extends Application
     @Override
     public void start(Stage stage){
         this.stage = stage;
+        stage.setScene(sceneCreatorAfterDeal());
         stage.setTitle("RIT BlackJack");
-        stage.setScene(sceneCreatorBeforeDeal());
         stage.setWidth(WIDTH);
         stage.setHeight(HEIGHT);
         stage.setResizable(false);
         stage.show();
+
+        beforeDealStage = new Stage();
+        beforeDealStage.setTitle("Enter your bet for the round");
+        beforeDealStage.setScene(sceneCreatorBeforeDeal());
+        beforeDealStage.show();
+
         update(cardModel, null);
     }
 
@@ -62,7 +74,7 @@ public class Main extends Application
     public Scene sceneCreatorAfterDeal(){
         Label moneyLabel = playerBalanceLabel();
         window.setTop(moneyLabel);
-        window.setAlignment(moneyLabel,Pos.TOP_RIGHT);
+        BorderPane.setAlignment(moneyLabel,Pos.TOP_RIGHT);
 
         window.setBackground(background);
         afterDeal = new Scene(window);
@@ -76,17 +88,35 @@ public class Main extends Application
     }
 
     public Scene sceneCreatorBeforeDeal(){
-        Button plus = new Button("+");
-        Button minus = new Button("-");
-        Button bet = new Button("Bet");
-        beforeDealButtonPanel.getChildren().addAll(plus, minus, bet);
-        beforeDealWindow.setBottom(beforeDealButtonPanel);
-        beforeDealWindow.setAlignment(beforeDealButtonPanel, Pos.BOTTOM_CENTER);
+        beforeDealWindow = new BorderPane();
+        beforeDealWindow.setBottom(createButtonPanel());
+        BorderPane.setAlignment(beforeDealButtonPanel, Pos.BOTTOM_CENTER);
 
-        Label betAmount = new Label("Bet amount: $50"); //TODO ADD BET AMOUNT INCREMENTATION
+        betAmount = new Label("Bet amount: $" + cardModel.getBet()); //TODO ADD BET AMOUNT INCREMENTATION
+        betAmount.setAlignment(Pos.CENTER_LEFT);
+        accountAmount = new Label("Account Balance: $" + cardModel.getBallance()); //TODO ADD ACCOUNT BALANCE
+        accountAmount.setAlignment(Pos.CENTER_RIGHT);
+        beforeDealWindow.setLeft(betAmount);
+        beforeDealWindow.setRight(accountAmount);
 
         beforeDeal = new Scene(beforeDealWindow);
         return beforeDeal;
+    }
+
+    public FlowPane createButtonPanel(){
+        beforeDealButtonPanel = new FlowPane();
+        plus = new Button("+");
+        plus.setMinSize(25,25);
+        plus.setOnAction(actionEvent -> cardModel.incrementBet(true));
+        minus = new Button("-");
+        minus.setMinSize(25,25);
+        minus.setOnAction(actionEvent -> cardModel.incrementBet(false));
+        bet = new Button("Bet");
+        bet.setMinSize(25,25);
+        bet.setOnAction(actionEvent -> beforeDealStage.close());
+        beforeDealButtonPanel.getChildren().addAll(minus, plus, bet);
+        beforeDealButtonPanel.setAlignment(Pos.CENTER);
+        return beforeDealButtonPanel;
     }
 
 ////////////////////////////////////////////////////////////////////
@@ -96,6 +126,11 @@ public class Main extends Application
      */
     @Override
     public void update(Model m, Object arg) {
+        if ((String) arg == "bet"){
+            System.out.println("Bet Changed: "+cardModel.getBet());
+            beforeDealStage.setScene(sceneCreatorBeforeDeal());
+            beforeDealStage.show();
+        }
         stage.show();
     }
 
